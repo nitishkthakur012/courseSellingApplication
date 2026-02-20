@@ -1,0 +1,49 @@
+const {mongoose} = require("mongoose")
+require("dotenv").config();
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
+
+const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
+
+const userSchema = new Schema({
+    email: {type: String, unique: true},
+    password: String,
+    firstName: String,
+    lastName: String,
+});
+
+const adminSchema = new Schema({
+    email: {type: String, unique: true},
+    password: String,
+    firstName: String,
+    lastName: String,
+
+});
+
+const courseSchema = new Schema({
+    title: String,
+    description: String,
+    price: Number,
+    imageUrl: String,
+    creatorId: ObjectId
+});
+
+const purchaseSchema = new Schema({
+    userId: ObjectId,   
+    courseId: ObjectId
+});
+
+const userModel = mongoose.model("user", userSchema);
+const courseModel = mongoose.model("admin", adminSchema);
+const adminModel = mongoose.model("course", courseSchema);
+const purchaseModel = mongoose.model("purchase", purchaseSchema);
+
+module.export = {
+    userModel,
+    adminModel,
+    courseModel,
+    purchaseModel
+}
