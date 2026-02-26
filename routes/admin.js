@@ -83,7 +83,7 @@ adminRouter.post("/signin",async function (req, res) {
 
 //endpoint for admin to create a course
 adminRouter.post("/course", adminMiddleware, async function (req, res) {
-    const adminId = req.userId;
+    const adminId = req.adminId;
 
     const {title, description, imageUrl, price} = req.body;
     //better if admin can directly upload the image, here takin url
@@ -108,6 +108,7 @@ adminRouter.put("/course", function (req, res) {
   });
 });
 
+//endpoint for admin to get back all the course that they had created
 adminRouter.get("/course/bulk", function (req, res) {
   res.json({
     message: "signin endpoint",

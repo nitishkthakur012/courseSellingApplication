@@ -1,4 +1,3 @@
-require("dotenv").config()
 
 module.exports = {
     JWT_USER_PASSWORD : process.env.JWT_USER_SECRET,
