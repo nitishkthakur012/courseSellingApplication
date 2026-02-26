@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt')
 const {userModel} = require("../db");
 const jwt = require("jsonwebtoken");
 const {z} = require("zod")
-require("dotenv").config()
-const JWT_USER_PASSWORD = process.env.JWT_USER_SECRET; 
+const { JWT_USER_PASSWORD} = require("../config"); 
 
 const userRouter = Router();
 

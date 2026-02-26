@@ -1,11 +1,11 @@
 const { Router } = require("express");
 const adminRouter = Router();
-const { adminModel } = require("../db");
+const { adminModel, courseModel } = require("../db");
 const jwt = require("jsonwebtoken");
 const {z} = require("zod")
 const bcrypt = require("bcrypt");
-require("dotenv").config()
-const JWT_ADMIN_PASSWORD = process.env.JWT_ADMIN_SECRET
+const {JWT_ADMIN_PASSWORD} = require("../config");
+const { adminMiddleware } = require("../middleware/admin");
 
 adminRouter.post("/signup", async function (req, res) {
   const {email, password, firstName, lastName} = req.body; 
@@ -81,12 +81,27 @@ adminRouter.post("/signin",async function (req, res) {
         }
 });
 
-adminRouter.post("/course", function (req, res) {
+//endpoint for admin to create a course
+adminRouter.post("/course", adminMiddleware, async function (req, res) {
+    const adminId = req.userId;
+
+    const {title, description, imageUrl, price} = req.body;
+    //better if admin can directly upload the image, here takin url
+    const course = await courseModel.create({
+        title: title,
+        description: description,
+        imageURL: imageUrl,
+        price: price, 
+        creatorId: adminId
+    })
+
   res.json({
-    message: "signin endpoint",
+    message: "Course created",
+    courseId: course._id
   });
 });
 
+//endpoint for admin to update the course(title, price etc)
 adminRouter.put("/course", function (req, res) {
   res.json({
     message: "signin endpoint",
