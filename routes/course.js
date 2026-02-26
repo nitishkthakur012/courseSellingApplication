@@ -11,7 +11,7 @@ const courseRouter = Router();
     
     courseRouter.get("/preview", function(req, res){
         res.json({
-            message: "course listing endpoint"
+            message: "course preview endpoint"
         })
     })
 
