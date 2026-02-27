@@ -1,6 +1,6 @@
 const {Router, response} = require("express");
 const bcrypt = require('bcrypt')
-const {userModel, purchaseModel} = require("../db");
+const {userModel, purchaseModel, courseModel} = require("../db");
 const jwt = require("jsonwebtoken");
 const {z} = require("zod")
 const { JWT_USER_PASSWORD} = require("../config"); 
@@ -91,8 +91,14 @@ const userRouter = Router();
         const purchases = await purchaseModel.find({
             userId
         })
+        //ref use better approach
+        const coursesData = await courseModel.find({
+            _id: { $in: purchases.map(x=>x.courseId)}
+        })
+
         res.json({
-            purchases
+            purchases,
+            coursesData
         })
     })
 
